@@ -1,7 +1,7 @@
 
 use axum::{routing::{get, post}, Router, extract::{Path, State}, Json};
 use serde::{Deserialize, Serialize};
-use std::{net::SocketAddr, sync::Arc};
+use std::sync::Arc;
 use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt};
 use sqlx::{PgPool};
 use ubl_auth::AuthCtx;
@@ -58,9 +58,10 @@ async fn main() -> anyhow::Result<()> {
         .route("/v1/:app/:tenant/keys/:did", get(keys_get))
         .with_state(state);
 
-    let addr: SocketAddr = "0.0.0.0:8080".parse()?;
-    tracing::info!("listening on {}", addr);
-    axum::Server::bind(&addr).serve(app.into_make_service()).await?;
+    let addr = "0.0.0.0:8080";
+    let listener = tokio::net::TcpListener::bind(addr).await?;
+    tracing::info!("listening on {}", listener.local_addr()?);
+    axum::serve(listener, app).await?;
     Ok(())
 }
 

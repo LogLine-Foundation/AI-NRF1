@@ -1,6 +1,5 @@
 
 use clap::{Parser, Subcommand, Args};
-use std::fs;
 use anyhow::Result;
 
 #[derive(Parser)]
@@ -33,8 +32,12 @@ enum GhostAction {
 fn main() -> Result<()> {
     let cli = Cli::parse();
     match cli.cmd {
-        Cmd::Bundle { receipt, context, out } => { /* identical to previous step (omitted here) */ }
-        Cmd::VerifyBundle { bundle } => { /* idem */ }
+        Cmd::Bundle { receipt, context, out } => { 
+            println!("(stub) would bundle receipt={receipt} context={:?} out={out}", context);
+        }
+        Cmd::VerifyBundle { bundle } => { 
+            println!("(stub) would verify bundle={bundle}");
+        }
         Cmd::Ghost(g) => match g.action {
             GhostAction::New { body_hex, cid, did, rt } => {
                 println!("(stub) would POST /ghosts with cid={cid} did={did} rt={rt} body_hex.len={}", body_hex.len());
@@ -49,16 +52,3 @@ fn main() -> Result<()> {
     }
     Ok(())
 }
-
-
-#[derive(Subcommand)]
-enum JsonCmd {
-    /// Validate and show NRF mapping
-    Validate { #[arg(long)] file: String },
-}
-
-#[derive(Subcommand)]
-enum Cmd2 {
-    Json(JsonCmd),
-}
-

@@ -1,6 +1,6 @@
 
 use anyhow::Result;
-use aws_sdk_s3::{Client, types::ByteStream};
+use aws_sdk_s3::{Client, primitives::ByteStream};
 
 pub struct S3 {
   client: Client,
@@ -9,7 +9,7 @@ pub struct S3 {
 
 impl S3 {
   pub async fn new(bucket: String) -> Result<Self> {
-    let conf = aws_config::load_from_env().await;
+    let conf = aws_config::load_defaults(aws_config::BehaviorVersion::latest()).await;
     let client = Client::new(&conf);
     Ok(Self { client, bucket })
   }
