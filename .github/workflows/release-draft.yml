@@ -1,0 +1,83 @@
+
+name: Release (Draft + Checksums)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to create (e.g., v0.3.9)"
+        required: false
+        type: string
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # for creating GitHub Releases
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure tag (workflow_dispatch path)
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.tag != '' }}
+        run: |
+          git tag "${{ inputs.tag }}"
+          git push origin "${{ inputs.tag }}"
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build workspace (sanity)
+        run: cargo build --workspace --all-targets
+
+      - name: Unit & vector tests
+        run: cargo test --workspace --all-features -- --nocapture
+
+      - name: Build CLI
+        working-directory: tools/nrf1-cli
+        run: cargo build --release
+
+      - name: Expose CLI to PATH
+        run: echo "$PWD/target/release" >> $GITHUB_PATH
+        working-directory: tools/nrf1-cli
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python reference
+        working-directory: impl/python/nrf_core_ref
+        run: python -m pip install -e .
+
+      - name: Autobundle
+        run: scripts/make_autobundle.sh
+
+      - name: Checksums
+        run: scripts/make_checksums.sh
+
+      - name: Prepare Release body
+        id: notes
+        run: |
+          BODY="$(cat RELEASE_NOTES.md)"
+          # escape % for set-output compatibility across shells
+          BODY="${BODY//'%'/'%25'}"
+          BODY="${BODY//$'\n'/'%0A'}"
+          BODY="${BODY//$'\r'/'%0D'}"
+          echo "body=$BODY" >> "$GITHUB_OUTPUT"
+
+      - name: Create GitHub Release (draft)
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }} (draft)
+          body: ${{ steps.notes.outputs.body }}
+          files: |
+            dist/ai-nrf1_autobundle_*.zip
+            dist/CHECKSUMS.sha256
+            dist/CHECKSUMS.sha512

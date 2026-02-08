@@ -1,0 +1,11 @@
+
+[package]
+name = "nrf1"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+blake3 = "1"
+unicode-normalization = "0.1"
+thiserror = "1"

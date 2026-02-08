@@ -1,0 +1,51 @@
+
+name: CI - Minimize Crashers
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main, master ]
+    paths:
+      - 'impl/rust/nrf-core/fuzz/crashers/**'
+
+jobs:
+  minimize:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build CLI (nrf1)
+        working-directory: tools/nrf1-cli
+        run: cargo build --release
+
+      - name: Add CLI to PATH
+        run: echo "$PWD/target/release" >> $GITHUB_PATH
+        working-directory: tools/nrf1-cli
+
+      - name: Python setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python ref
+        working-directory: impl/python/nrf_core_ref
+        run: python -m pip install -e .
+
+      - name: Minimize all crashers
+        run: tools/crash/reduce_all.sh
+
+      - name: Upload minimized crashers
+        uses: actions/upload-artifact@v4
+        with:
+          name: nrf1-crashers-minimized
+          path: impl/rust/nrf-core/fuzz/crashers_minimized
+
+      - name: (Optional) Open issues for crashers
+        if: ${{ env.GH_TOKEN != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 tools/crash/open_issue_for_crashers.py || true

@@ -1,0 +1,5 @@
+{
+  "source_precedence": "hardened_grandao > AI-NRF1; Step4 overlays overwrite previous with backup",
+  "conflicts_stashed_under": "_conflicts",
+  "backup_pre_step4": "_backup_pre_step4"
+}

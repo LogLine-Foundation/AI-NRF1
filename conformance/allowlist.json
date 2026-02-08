@@ -1,0 +1,11 @@
+{
+  "runtimes": [
+    {
+      "name": "ainrf1",
+      "version": "0.1.0",
+      "binary_sha256": "<fill-in-ci>",
+      "notes": "computed in CI and committed"
+    }
+  ],
+  "models": []
+}

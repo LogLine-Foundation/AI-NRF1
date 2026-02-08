@@ -1,0 +1,19 @@
+version: 1
+engine:
+  profile: LLM-Engine
+  provider: openai
+  model: gpt-4o-2025-xx
+  max_tokens: 32000
+  temperature: 0.2
+  reasoning_budget: high
+  network: disallow_tools
+slos:
+  target_hrd: 0.85
+  p95_latency_ms: 1500
+caching:
+  by_context_cid: true
+  ttl: 90d
+compliance:
+  prompt_hash: blake3
+  record_trace: full
+fallback: null

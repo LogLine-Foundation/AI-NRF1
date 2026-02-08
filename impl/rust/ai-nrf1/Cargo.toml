@@ -1,0 +1,31 @@
+[package]
+repository = "https://github.com/<org>/AI-NRF1"
+name = "ai-nrf1"
+version = "0.1.0"
+edition = "2021"
+categories = ["encoding", "data-structures"]
+keywords = ["canonical", "encoding", "content-addressable"]
+license = "MIT OR Apache-2.0"
+description = "NRF-1.1 canonical binary encoding (LLM-first, zero-choice)"
+readme = "README.md"
+
+[features]
+default = []
+compat_cbor = ["ciborium"]
+# compat_msgpack = ["rmp", "rmp-serde"]
+# compat_bencode = ["bendy"]
+
+[dependencies]
+unicode-normalization = "0.1"
+ciborium = { version = "0.2", optional = true }
+# rmp = { version = "0.8", optional = true }
+# rmp-serde = { version = "1.3", optional = true }
+# bendy = { version = "0.3", optional = true }
+
+[dev-dependencies]
+hex = "0.4"
+sha2 = "0.10"
+
+[[bin]]
+name = "ai-nrf1"
+path = "src/bin/cli.rs"

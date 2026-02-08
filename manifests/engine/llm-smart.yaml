@@ -1,0 +1,27 @@
+version: 1
+engine:
+  profile: LLM-Smart
+  runtime: llama.cpp
+  model_path: ./models/llama3-8b-q4_k_m.gguf
+  model_sha256: "sha256:<HASH>"
+  max_tokens: 2048
+  temperature: 0.1
+  reasoning_budget: short
+  network: offline
+slos:
+  target_hrd: 0.80
+  p95_latency_ms: 3000
+caching:
+  by_context_cid: true
+  ttl: 180d
+compliance:
+  prompt_hash: blake3
+  record_trace: minimal
+fallback:
+  enable: true
+  threshold_confidence: 0.78
+  to:
+    profile: LLM-Engine
+    provider: openai
+    model: gpt-4o-2025-xx
+    max_tokens: 30000

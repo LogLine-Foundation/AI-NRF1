@@ -1,0 +1,1 @@
+Step 43: Applied receipt_enrichments_patch onto profiles_integrated bundle.

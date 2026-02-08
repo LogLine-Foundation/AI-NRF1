@@ -1,0 +1,25 @@
+
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.ai-nrf1.org/ghost.v1.json",
+  "type": "object",
+  "required": ["v","t","status","wbe","nonce"],
+  "properties": {
+    "v": { "const": "ghost.v1" },
+    "t": { "type": "integer" },
+    "status": { "enum": ["pending","expired"] },
+    "wbe": {
+      "type": "object",
+      "required": ["who","what","when","intent"],
+      "properties": {
+        "who": { "type": "string" },
+        "what": { "type": "string" },
+        "when": { "type": "integer" },
+        "intent": { "type": "string" }
+      }
+    },
+    "cause": { "enum": ["timeout","canceled","drift","none"] },
+    "nonce": { "type": "string" },
+    "sig": { "type": "string" }
+  }
+}

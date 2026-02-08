@@ -1,0 +1,6 @@
+# Registry of minimized crashers. Keep in sync with impl/rust/nrf-core/fuzz/crashers_minimized
+# [[crasher]]
+# file = "seed_0001.nrf"
+# title = "Decoder rejects valid NFC Hangul"
+# status = "open"  # open|fixed|ignored
+# link = "https://github.com/ORG/REPO/issues/123"

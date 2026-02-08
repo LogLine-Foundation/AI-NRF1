@@ -1,0 +1,23 @@
+name: Rust Conformance
+
+on:
+  push:
+    paths:
+      - 'impl/rust/**'
+      - 'tests/vectors/**'
+      - '.github/workflows/ci-rust.yml'
+      - 'Cargo.toml'
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+      - name: Build
+        run: cargo build --workspace --locked
+      - name: Test (Conformance)
+        run: cargo test --workspace -- --nocapture

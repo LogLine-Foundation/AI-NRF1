@@ -1,0 +1,5 @@
+{
+  "name": "test",
+  "payload": {"$bytes":"00ff10"},
+  "vals": [1, null, true, {"$bytes":"ab"}]
+}

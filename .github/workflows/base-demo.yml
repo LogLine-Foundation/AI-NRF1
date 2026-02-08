@@ -1,0 +1,76 @@
+name: AI-NRF1 BASE Demo
+on:
+  push: { branches: ["main"] }
+  workflow_dispatch: {}
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build --release --workspace
+      - name: Run conformance
+        run: ./target/release/ainrf1 conformance conformance/manifest.json
+
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - run: cargo build --release --workspace
+      - name: Binary SHA256
+        run: |
+          set -e
+          BIN=./target/release/ainrf1
+          sha256sum "$BIN" | awk '{print $1}' | tee binary.sha256
+          echo "BINARY_SHA256=$(cat binary.sha256)" >> $GITHUB_ENV
+      - name: SBOM
+        run: python3 tools/sbom.py > sbom.cdx.json
+      - name: Demo CID
+        run: echo '{"a":1}' > a.json && ./target/release/ainrf1 cid a.json
+      - name: Canon & Judge
+        run: |
+          ./target/release/ainrf1 canon a.json -o context.nrf
+          ./target/release/ainrf1 judge context.nrf --policy eu-ai-act@1 --engine ollama --model llama3:8b --out receipt.json --url https://ubl.agency
+      - name: Bundle & Verify
+        run: |
+          ./target/release/ainrf1 bundle --receipt receipt.json --context context.nrf --sbom sbom.cdx.json -o passport.tgz
+          ./target/release/ainrf1 verify --bundle passport.tgz --known-runtime $BINARY_SHA256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ai-nrf1-passport
+          path: |
+            passport.tgz
+            receipt.json
+            context.nrf
+            sbom.cdx.json
+            binary.sha256
+
+  allowlist:
+    runs-on: ubuntu-latest
+    needs: demo
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare allowlist
+        run: |
+          echo "{ \"runtimes\": [ { \"name\": \"ainrf1\", \"version\": \"ci\", \"binary_sha256\": \"${{ needs.demo.outputs.binsha }}\" } ], \"models\": [] }" > conformance/allowlist.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: allowlist
+          path: conformance/allowlist.json
+
+  allowlist_versioned:
+    runs-on: ubuntu-latest
+    needs: demo
+    steps:
+      - uses: actions/checkout@v4
+      - name: Make allowlist (tagged)
+        env:
+          GIT_TAG: ${{ github.ref_name }}
+        run: |
+          echo "{ \"runtimes\": [ { \"name\": \"ainrf1\", \"version\": \"$GIT_TAG\", \"binary_sha256\": \"${{ needs.demo.outputs.binsha }}\" } ] }" > conformance/allowlist.$GIT_TAG.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: allowlist-$GIT_TAG
+          path: conformance/allowlist.$GIT_TAG.json

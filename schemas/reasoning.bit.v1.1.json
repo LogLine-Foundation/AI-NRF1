@@ -1,0 +1,99 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.ai-nrf1/reasoning.bit.v1.1.json",
+  "type": "object",
+  "required": [
+    "v",
+    "context_cid",
+    "prompt_hash",
+    "model",
+    "policy",
+    "judgment",
+    "usage",
+    "determinism"
+  ],
+  "properties": {
+    "v": {
+      "const": "reasoning.bit.v1"
+    },
+    "context_cid": {
+      "type": "string",
+      "pattern": "^b3:[a-f0-9]{64}$"
+    },
+    "prompt_hash": {
+      "type": "string"
+    },
+    "model": {
+      "type": "string"
+    },
+    "model_sha256": {
+      "type": "string"
+    },
+    "policy": {
+      "type": "string"
+    },
+    "judgment": {
+      "type": "object",
+      "required": [
+        "verdict",
+        "confidence",
+        "reasoning"
+      ],
+      "properties": {
+        "verdict": {
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NEEDS_REVIEW"
+          ]
+        },
+        "confidence": {
+          "type": "number"
+        },
+        "reasoning": {
+          "type": "string"
+        }
+      }
+    },
+    "usage": {
+      "type": "object",
+      "properties": {
+        "input_tokens": {
+          "type": "integer"
+        },
+        "output_tokens": {
+          "type": "integer"
+        },
+        "hrd_score": {
+          "type": "number"
+        }
+      }
+    },
+    "sig": {
+      "type": "string"
+    },
+    "determinism": {
+      "type": "object",
+      "required": [
+        "seed",
+        "temperature",
+        "top_p",
+        "model_sha256"
+      ],
+      "properties": {
+        "seed": {
+          "type": "integer"
+        },
+        "temperature": {
+          "type": "number"
+        },
+        "top_p": {
+          "type": "number"
+        },
+        "model_sha256": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

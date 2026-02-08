@@ -1,0 +1,22 @@
+name: Python Conformance
+
+on:
+  push:
+    paths:
+      - 'scripts/nrf1_check.py'
+      - 'tests/vectors/**'
+      - '.github/workflows/ci-python.yml'
+  pull_request:
+
+jobs:
+  python-checker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Run Python NRF-1.1 checker
+        run: |
+          python scripts/nrf1_check.py

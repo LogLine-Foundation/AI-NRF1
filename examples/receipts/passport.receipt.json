@@ -1,0 +1,25 @@
+{
+  "cid": "b3:3e6b3e6b3e6b3e6b3e6b3e6b3e6b3e6b3e6b3e6b3e6b3e6b3e6b3e6b3e6b",
+  "body_cid": "b3:9b2c9b2c9b2c9b2c9b2c9b2c9b2c9b2c9b2c9b2c9b2c9b2c9b2c9b2c9b2c",
+  "ts_ns": 1827364512345678900,
+  "signer": "did:ubl:svc#kid-1",
+  "claims": {
+    "policy": "ai-passport@1",
+    "verdict": "PASS"
+  },
+  "ghost": {
+    "budget": 140,
+    "counter": 103,
+    "cost_ms": 8000,
+    "window_day": 6
+  },
+  "chain": {
+    "prev_cid": "b3:7a017a017a017a017a017a017a017a017a017a017a017a017a017a017a01",
+    "skips": [
+      null,
+      "b3:1199119911991199119911991199119911991199119911991199119911991199",
+      null
+    ],
+    "link_hash": "b3:55dd55dd55dd55dd55dd55dd55dd55dd55dd55dd55dd55dd55dd55dd55dd"
+  }
+}

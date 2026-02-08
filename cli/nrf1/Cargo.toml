@@ -1,0 +1,12 @@
+
+[package]
+name = "nrf1"
+version = "0.3.9"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4", features=["derive"] }
+serde_json = "1"
+anyhow = "1"
+zip = "0.6"
+blake3 = "1"

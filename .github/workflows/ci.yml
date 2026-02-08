@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  rust:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Rust
+        uses: dtolnay/rust-toolchain@stable
+      - name: Test (core)
+        working-directory: impl/rust/ai-nrf1
+        run: cargo test --verbose
+      - name: Test (compat_cbor)
+        working-directory: impl/rust/ai-nrf1
+        run: cargo test --features compat_cbor --verbose

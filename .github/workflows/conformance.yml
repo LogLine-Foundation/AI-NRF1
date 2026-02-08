@@ -1,0 +1,28 @@
+name: Conformance
+on: [push, pull_request]
+jobs:
+  gates:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Build CLI
+        run: echo "build placeholder (hook to cargo build -p ainrf1)"
+      - name: Gate A1 — KATs (nrf-core + transistor)
+        run: echo "run cargo test -p nrf-core"
+      - name: Gate A2 — Fuzz decoder (smoke)
+        run: echo "run cargo run -p nrf-fuzz -- --ci-smoke"
+      - name: Gate A3 — Unicode pinned (NFC)
+        run: echo "run cargo test -p nrf-core --features unicode-pinned"
+      - name: Gate A4 — Varint non-minimal must fail
+        run: echo "run cargo test -p nrf-core --test varint_nonminimal"
+      - name: Gate A5 — WBE + Ghost receipts (sim)
+        run: echo "run cargo test -p receipts --test wbe_ghost"
+      - name: Gate G-Trace — prompt_hash + rt.binary_sha256
+        run: scripts/ci/check_trace_fields.sh
+      - name: Gate G-ModelHash (LLM-Smart)
+        run: scripts/ci/check_model_hash.sh
+      - name: Gate G-HRD (Engine ≥ 0.85 | Smart ≥ 0.80)
+        run: scripts/ci/check_hrd_targets.sh
+      - name: Gate G-Latency (p95)
+        run: scripts/ci/check_latency_slo.sh

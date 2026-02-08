@@ -1,0 +1,32 @@
+{
+  "v": "reasoning.bit.v1",
+  "t": "2026-02-08T12:30:00Z",
+  "context_cid": "b3:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "engine": {
+    "profile": "LLM-Engine",
+    "provider": "openai",
+    "model": "gpt-4o-2025-xx",
+    "escalated_from": null
+  },
+  "usage": {
+    "input_tokens": 5980,
+    "output_tokens": 820,
+    "hrd_score": 0.88
+  },
+  "judgment": {
+    "verdict": "NEEDS_REVIEW",
+    "confidence": 0.73,
+    "reasoning": "\u2026"
+  },
+  "trace": {
+    "prompt_hash": "b3:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "policy": [
+      "eu-ai-act@1"
+    ]
+  },
+  "rt": {
+    "binary_sha256": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "version": "v0.3.x"
+  },
+  "sig": "<ed25519:base64>"
+}

@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.ubl.agency/receipt.v1.json",
+  "type": "object",
+  "required": [
+    "v",
+    "t",
+    "body",
+    "nonce",
+    "rt",
+    "issuer_did",
+    "receipt_cid"
+  ],
+  "properties": {
+    "v": {
+      "type": "string",
+      "const": "receipt-v1"
+    },
+    "t": {
+      "type": "integer"
+    },
+    "body": {},
+    "issuer_did": {
+      "type": "string"
+    },
+    "subject_did": {
+      "type": "string"
+    },
+    "kid": {
+      "type": "string"
+    },
+    "receipt_cid": {
+      "type": "string",
+      "pattern": "^b3:[a-f0-9]{64}$"
+    },
+    "prev": {
+      "type": "string",
+      "pattern": "^b3:[a-f0-9]{64}$"
+    },
+    "nonce": {
+      "type": "string"
+    },
+    "rt": {
+      "type": "object",
+      "required": [
+        "name",
+        "version",
+        "binary_sha256"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "commit": {
+          "type": "string"
+        },
+        "binary_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "env": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "certs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "url": {
+      "type": "string",
+      "format": "uri"
+    },
+    "sig": {
+      "type": "string"
+    }
+  }
+}

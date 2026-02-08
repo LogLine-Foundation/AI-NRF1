@@ -1,0 +1,24 @@
+
+[package]
+name = "nrf1-cli"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+ed25519-dalek = "2"
+rand = "0.8"
+ai_nrf1_receipts = { path = "../../rust/receipts" }
+
+zip = { version = "0.6", default-features = false, features = ["deflate"] }
+
+blake3 = "1"
+sha2 = "0.10"
+
+signers = { path = "../signers" }
+
+anyhow = "1"
+
+base64 = "0.22"

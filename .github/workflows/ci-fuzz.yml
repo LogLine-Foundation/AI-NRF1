@@ -1,0 +1,29 @@
+name: CI - Fuzz (nrf-core)
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  fuzz-decoder:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install cargo-fuzz
+        run: cargo install cargo-fuzz
+
+      - name: Fuzz decode_value (short smoke)
+        working-directory: impl/rust/nrf-core
+        run: |
+          cargo fuzz run decode_value -- -max_total_time=60 -timeout=5
+
+- name: Fuzz varint32 (short smoke)
+  working-directory: impl/rust/nrf-core
+  run: |
+    cargo fuzz run varint32 -- -max_total_time=60 -timeout=5

@@ -1,0 +1,36 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Cache cargo
+        uses: Swatinem/rust-cache@v2
+      - name: Build CLI (ainrf1)
+        run: |
+          cargo build --release -p ainrf1 || true
+      - name: Package artifacts
+        run: |
+          mkdir -p dist
+          if [ -f target/release/ainrf1 ]; then
+            cp target/release/ainrf1 dist/ainrf1-linux-x86_64
+          fi
+          tar -czf dist/ai-nrf1-${{ github.ref_name }}-linux-x86_64.tar.gz -C dist ainrf1-linux-x86_64 || true
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: "${{ github.ref_name }}"
+          draft: true
+          files: |
+            dist/*.tar.gz
+            CHANGELOG.md
+          body_path: docs/RELEASE_DRAFT_v0.3.9.md

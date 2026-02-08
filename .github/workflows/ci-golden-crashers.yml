@@ -1,0 +1,37 @@
+
+name: CI - Golden Crashers Gate
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  golden-crashers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust CLI (nrf1)
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build CLI
+        working-directory: tools/nrf1-cli
+        run: cargo build --release
+
+      - name: Add CLI to PATH
+        run: echo "$PWD/target/release" >> $GITHUB_PATH
+        working-directory: tools/nrf1-cli
+
+      - name: Python setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python reference
+        working-directory: impl/python/nrf_core_ref
+        run: python -m pip install -e .
+
+      - name: Run Golden Crashers Gate
+        run: python3 tools/crash/verify_crashers.py

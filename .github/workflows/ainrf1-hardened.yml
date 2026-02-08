@@ -1,0 +1,42 @@
+name: AI-NRF1 Hardened Demo
+on:
+  push: { branches: ["main"] }
+  workflow_dispatch: {}
+
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build CLI
+        run: cargo build --release
+
+      - name: Setup Ollama
+        uses: jasonwhite/gh-setup-ollama@v1
+
+      - name: Pull model (Llama 3 8B instruct)
+        run: ollama pull llama3:8b-instruct
+
+      - name: Sanitize (NRF-1.1)
+        run: ./target/release/ainrf1 sanitize examples/model-card.json --schema schemas/model-card.v1.json --out context.nrf
+
+      - name: Judge (Deterministic Params)
+        run: |
+          ./target/release/ainrf1 judge context.nrf             --policy pack-compliance/eu-ai-act@1             --engine ollama             --model llama3:8b-instruct             --seed 0 --temperature 0 --top-p 1             --out receipt.nrf             --url ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}#artifact-passport
+
+      - name: Bundle
+        run: ./target/release/ainrf1 bundle receipt.nrf --include-context --out passport.tgz
+
+      - name: Verify (Strict)
+        run: |
+          ./target/release/ainrf1 verify passport.tgz             --known-runtime deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef             --require-cosign=false
+
+      - name: Upload Passport
+        uses: actions/upload-artifact@v4
+        with:
+          name: passport
+          path: passport.tgz

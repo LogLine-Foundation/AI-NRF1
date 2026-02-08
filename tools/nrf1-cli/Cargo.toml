@@ -1,0 +1,23 @@
+[package]
+name = "nrf1-cli"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "CLI for NRF-1.1: encode/decode/hash"
+repository = "https://example.com/AI-NRF1"
+
+[dependencies]
+nrf-core = { path = "../../impl/rust/nrf-core" }
+clap = { version = "4", features = ["derive"] }
+serde_json = "1"
+hex = "0.4"
+blake3 = "1"
+
+anyhow = "1"
+
+unicode-normalization = "0.1"
+
+[dev-dependencies]
+assert_cmd = "2"
+predicates = "3"
+tempfile = "3"

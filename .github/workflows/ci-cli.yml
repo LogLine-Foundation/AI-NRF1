@@ -1,0 +1,26 @@
+name: CLI Build & Smoke
+
+on:
+  push:
+    paths:
+      - 'impl/rust/**'
+      - 'tools/nrf1-cli/**'
+      - '.github/workflows/ci-cli.yml'
+      - 'Cargo.toml'
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - uses: Swatinem/rust-cache@v2
+      - name: Build CLI
+        run: cargo build -p nrf1-cli --locked
+      - name: Smoke Test (encode/decode/hash)
+        run: |
+          target/debug/nrf1 encode - <<<'{"hello":"world","n":42}' > /tmp/x.nrf
+          target/debug/nrf1 decode /tmp/x.nrf -o /tmp/x.json
+          cat /tmp/x.json
+          target/debug/nrf1 hash /tmp/x.nrf --tag

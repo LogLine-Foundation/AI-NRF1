@@ -1,0 +1,32 @@
+{
+  "v": "reasoning.bit.v1",
+  "t": "2026-02-08T12:30:00Z",
+  "context_cid": "b3:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd",
+  "engine": {
+    "profile": "LLM-Smart",
+    "runtime": "llama.cpp",
+    "model_sha256": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "escalated_from": null
+  },
+  "usage": {
+    "input_tokens": 1850,
+    "output_tokens": 230,
+    "hrd_score": 0.83
+  },
+  "judgment": {
+    "verdict": "PASS",
+    "confidence": 0.81,
+    "reasoning": "\u2026"
+  },
+  "trace": {
+    "prompt_hash": "b3:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+    "policy": [
+      "eu-ai-act@1"
+    ]
+  },
+  "rt": {
+    "binary_sha256": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+    "version": "v0.3.x"
+  },
+  "sig": "<ed25519:base64>"
+}

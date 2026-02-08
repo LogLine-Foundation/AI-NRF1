@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://ubl.agency/schemas/receipt.v1.json",
+  "type": "object",
+  "required": [
+    "cid",
+    "body_cid",
+    "ts_ns",
+    "signer",
+    "claims"
+  ],
+  "properties": {
+    "cid": {
+      "type": "string",
+      "pattern": "^b3:[0-9a-f]{64}$"
+    },
+    "body_cid": {
+      "type": "string",
+      "pattern": "^b3:[0-9a-f]{64}$"
+    },
+    "ts_ns": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "signer": {
+      "type": "string"
+    },
+    "claims": {
+      "type": "object"
+    },
+    "ghost": {
+      "type": "object",
+      "required": [
+        "budget",
+        "counter",
+        "cost_ms",
+        "window_day"
+      ],
+      "properties": {
+        "budget": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "counter": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cost_ms": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "window_day": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 6
+        }
+      },
+      "additionalProperties": false
+    },
+    "chain": {
+      "type": "object",
+      "required": [
+        "prev_cid",
+        "link_hash"
+      ],
+      "properties": {
+        "prev_cid": {
+          "type": "string",
+          "pattern": "^b3:[0-9a-f]{64}$"
+        },
+        "skips": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "null"
+              },
+              {
+                "type": "string",
+                "pattern": "^b3:[0-9a-f]{64}$"
+              }
+            ]
+          }
+        },
+        "link_hash": {
+          "type": "string",
+          "pattern": "^b3:[0-9a-f]{64}$"
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,12 @@
+policy ReasoningBudget(profile):
+  when profile == "LLM-Smart":
+    require usage.output_tokens <= 2048
+    require engine.runtime in ["llama.cpp","ollama"]
+    require engine.model_sha256 != null
+  when profile == "LLM-Engine":
+    require usage.hrd_score >= 0.85
+    require engine.provider in ["openai","anthropic","azure"]
+    require engine.model != null
+  always:
+    require trace.prompt_hash != null
+    require rt.binary_sha256 != null

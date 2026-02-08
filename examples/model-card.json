@@ -1,0 +1,10 @@
+{
+  "model_id": "acme/vision-v1",
+  "version": "1.0.0",
+  "provenance": {
+    "weights_hash": "sha256:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+  },
+  "metrics": {
+    "bias": 0.45
+  }
+}

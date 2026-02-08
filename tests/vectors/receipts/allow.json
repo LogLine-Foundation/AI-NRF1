@@ -1,0 +1,18 @@
+{
+  "v": "receipt-v1",
+  "t": 0,
+  "did": "did:ubl:demo",
+  "act": "EVALUATE",
+  "subject": "cid:blake3:demo",
+  "inputs_cid": "b3:0000000000000000000000000000000000000000000000000000000000000000",
+  "decision": "ALLOW",
+  "effects": {
+    "k": "v"
+  },
+  "rt": {
+    "binary_sha256": "0000000000000000000000000000000000000000000000000000000000000000",
+    "hal_ref": "hal:v1/demo"
+  },
+  "prev_receipt_cid": null,
+  "sig": null
+}

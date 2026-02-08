@@ -1,0 +1,38 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.ubl.agency/model-card.v1.json",
+  "type": "object",
+  "required": [
+    "model_id",
+    "version",
+    "provenance",
+    "metrics"
+  ],
+  "properties": {
+    "model_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "weights_hash": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "weights_hash"
+      ]
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "bias": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

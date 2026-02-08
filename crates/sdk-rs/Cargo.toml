@@ -1,0 +1,10 @@
+
+[package]
+name = "ai-nrf1-sdk"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+[dependencies]
+nrf1 = { path = "../nrf1" }
+serde_json = "1"

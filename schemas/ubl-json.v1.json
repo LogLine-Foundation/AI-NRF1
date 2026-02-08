@@ -1,0 +1,90 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.ubl.ai/ubl-json.v1.json",
+  "type": "object",
+  "required": [
+    "space",
+    "version",
+    "id",
+    "app",
+    "tenant",
+    "subject",
+    "intent",
+    "claims",
+    "grounds",
+    "rules_ref"
+  ],
+  "properties": {
+    "space": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "app": {
+      "type": "string",
+      "minLength": 1
+    },
+    "tenant": {
+      "type": "string",
+      "minLength": 1
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "intent": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "string"
+    },
+    "claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1
+    },
+    "grounds": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "rules_ref": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "decision_hint": {
+      "enum": [
+        "PASS",
+        "FAIL",
+        "NEEDS_REVIEW"
+      ]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,79 @@
+
+name: Release (Publish + SBOM)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to publish (e.g., v0.3.9). Must already exist as a draft release."
+        required: true
+        type: string
+      generate_sbom:
+        description: "Generate SBOMs with syft (true/false)"
+        required: false
+        default: "true"
+        type: choice
+        options: ["true", "false"]
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust (sanity)
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build CLI (release)
+        working-directory: tools/nrf1-cli
+        run: cargo build --release
+
+      - name: Generate Autobundle (to ensure artifacts exist)
+        run: scripts/make_autobundle.sh
+
+      - name: Install syft (if requested)
+        if: inputs.generate_sbom == 'true'
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+          syft version
+
+      - name: SBOM (best-effort)
+        if: inputs.generate_sbom == 'true'
+        run: scripts/sbom.sh --best-effort
+
+      - name: Checksums
+        run: scripts/make_checksums.sh
+
+      - name: Find draft release upload URL
+        id: get_release
+        uses: octokit/request-action@v2.x
+        with:
+          route: GET /repos/{owner}/{repo}/releases/tags/{tag}
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
+          tag:  ${{ inputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload assets to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ inputs.tag }}
+          files: |
+            dist/ai-nrf1_autobundle_*.zip
+            dist/CHECKSUMS.sha256
+            dist/CHECKSUMS.sha512
+            dist/sbom/*
+
+      - name: Publish Release (flip draft=false)
+        uses: octokit/request-action@v2.x
+        with:
+          route: PATCH /repos/{owner}/{repo}/releases/{release_id}
+          owner: ${{ github.repository_owner }}
+          repo: ${{ github.event.repository.name }}
+          release_id: ${{ fromJson(steps.get_release.outputs.data).id }}
+          draft: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

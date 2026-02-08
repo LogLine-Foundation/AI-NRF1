@@ -1,0 +1,8 @@
+{
+  "cid": "b3:deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef",
+  "did": "did:ubl:ZkDemoIssuer",
+  "v": "receipt-v1",
+  "body": {
+    "demo": true
+  }
+}

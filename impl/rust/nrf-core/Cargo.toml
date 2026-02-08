@@ -1,0 +1,15 @@
+[package]
+name = "nrf-core"
+version = "0.1.0"
+edition = "2021"
+license = "Apache-2.0"
+description = "NRF-1.1 canonical encoder/decoder and hash utilities"
+repository = "https://example.com/AI-NRF1"
+
+[dependencies]
+blake3 = "1"
+thiserror = "1"
+unicode-normalization = "0.1"
+
+[features]
+fuzz_expose = []

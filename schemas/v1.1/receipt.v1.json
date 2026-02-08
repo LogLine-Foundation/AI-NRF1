@@ -1,0 +1,120 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://schemas.ai-nrf1.org/receipt.v1.json",
+  "type": "object",
+  "required": [
+    "v",
+    "t",
+    "did",
+    "act",
+    "subject",
+    "inputs_cid",
+    "decision",
+    "rt"
+  ],
+  "properties": {
+    "v": {
+      "const": "receipt-v1"
+    },
+    "t": {
+      "type": "integer"
+    },
+    "did": {
+      "type": "string",
+      "pattern": "^did:[a-z0-9:-]+$"
+    },
+    "act": {
+      "type": "string",
+      "enum": [
+        "ATTEST",
+        "EVALUATE",
+        "EXECUTE"
+      ]
+    },
+    "subject": {
+      "type": "string"
+    },
+    "inputs_cid": {
+      "type": "string",
+      "pattern": "^b3:[a-f0-9]{64}$"
+    },
+    "decision": {
+      "type": "string",
+      "enum": [
+        "ALLOW",
+        "DENY",
+        "REQUIRE",
+        "GHOST"
+      ]
+    },
+    "effects": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "rt": {
+      "type": "object",
+      "required": [
+        "binary_sha256",
+        "hal_ref"
+      ],
+      "properties": {
+        "binary_sha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "hal_ref": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "prev_receipt_cid": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^b3:[a-f0-9]{64}$"
+    },
+    "sig": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "const": "GHOST"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "effects": {
+            "const": null
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "const": "ALLOW"
+          }
+        }
+      },
+      "then": {
+        "required": [
+          "effects"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": false
+}

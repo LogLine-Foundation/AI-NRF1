@@ -1,0 +1,32 @@
+
+name: CI - Corpus Sync & Artifact
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  corpus:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Python setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python ref
+        working-directory: impl/python/nrf_core_ref
+        run: python -m pip install -e .
+
+      - name: Generate deterministic random corpus
+        run: tools/corpus/sync_corpus.sh
+
+      - name: Upload generated corpus as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nrf1-corpus-generated
+          path: impl/rust/nrf-core/fuzz/corpus/decode_value/generated

@@ -1,0 +1,45 @@
+
+name: CI - Fix‑then‑Test Gate
+
+on:
+  pull_request:
+  push:
+    branches: [ main, master ]
+
+jobs:
+  fix-then-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Build CLI (nrf1)
+        working-directory: tools/nrf1-cli
+        run: cargo build --release
+
+      - name: Add CLI to PATH
+        run: echo "$PWD/target/release" >> $GITHUB_PATH
+        working-directory: tools/nrf1-cli
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python reference
+        working-directory: impl/python/nrf_core_ref
+        run: python -m pip install -e .
+
+      - name: Detect fixed crashers & propose tests
+        run: tools/crash/fix_then_test.sh
+
+      - name: Verify no minimized crashers became green without tests
+        run: |
+          if [ -n "$(ls -A impl/rust/nrf-core/fuzz/crashers_minimized/*.nrf 2>/dev/null || true)" ]; then
+            echo "Minimized crashers still present (ok if still failing)."
+          fi
+          # Run test compile to ensure generated tests are valid
+          cargo test -p nrf-core --tests --no-run

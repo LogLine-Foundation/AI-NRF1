@@ -1,0 +1,16 @@
+{
+  "runtime_binaries": [
+    {
+      "name": "ainrf1-runtime",
+      "version": "0.4.0",
+      "sha256": "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef"
+    }
+  ],
+  "models": [
+    {
+      "engine": "ollama",
+      "model": "llama3:8b-instruct",
+      "hash": "sha256:cafebabecafebabecafebabecafebabecafebabecafebabecafebabecafebabe"
+    }
+  ]
+}

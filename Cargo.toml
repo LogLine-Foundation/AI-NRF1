@@ -1,0 +1,10 @@
+
+[workspace]
+members = [
+  "crates/ubl-auth",
+  "crates/ubl-model",
+  "crates/ubl-storage",
+  "services/registry",
+  "cli/nrf1",
+]
+resolver = "2"

@@ -1,0 +1,21 @@
+{
+  "valid/null.nrf": "OK",
+  "valid/true.nrf": "OK",
+  "valid/int_42.nrf": "OK",
+  "valid/int_minus1.nrf": "OK",
+  "valid/int_0.nrf": "OK",
+  "valid/str_empty.nrf": "OK",
+  "valid/str_hello.nrf": "OK",
+  "valid/arr_empty.nrf": "OK",
+  "valid/arr_true_42.nrf": "OK",
+  "valid/map_empty.nrf": "OK",
+  "valid/map_name_value_42.nrf": "OK",
+  "valid/nested_a_arr1_mapb_null.nrf": "OK",
+  "invalid/bad_magic_InvalidMagic.nrf": "InvalidMagic",
+  "invalid/unknown_tag_InvalidTypeTag.nrf": "InvalidTypeTag",
+  "invalid/non_min_varint_str0_NonMinimalVarint.nrf": "NonMinimalVarint",
+  "invalid/duplicate_key_DuplicateKey.nrf": "DuplicateKey",
+  "invalid/unsorted_keys_UnsortedKeys.nrf": "UnsortedKeys",
+  "invalid/truncated_int_UnexpectedEOF.nrf": "UnexpectedEOF",
+  "invalid/trailing_data_TrailingData.nrf": "TrailingData"
+}
