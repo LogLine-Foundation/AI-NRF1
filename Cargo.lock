@@ -2029,13 +2029,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "nrf-core"
+version = "0.1.0"
+dependencies = [
+ "blake3",
+ "thiserror",
+ "unicode-normalization",
+]
+
+[[package]]
 name = "nrf1"
 version = "0.3.9"
 dependencies = [
  "anyhow",
  "blake3",
  "clap",
+ "nrf-core",
  "serde_json",
+ "unicode-normalization",
  "zip",
 ]
 

@@ -1,0 +1,4 @@
+# file: /Users/danvoulez/AI-NRF1.1-REPO/impl/python/nrf_core_ref/nrf_core_ref/nrf.py
+# hypothesis_version: 6.151.5
+
+[b'nrf1', 127, 128, 4294967295, '$bytes', '>q', 'NFC', 'invalid hex', 'utf-8', '\ufeff']

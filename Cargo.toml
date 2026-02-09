@@ -6,5 +6,9 @@ members = [
   "crates/ubl-storage",
   "services/registry",
   "cli/nrf1",
+  "impl/rust/nrf-core",
+]
+exclude = [
+  "tools/nrf1-cli",
 ]
 resolver = "2"

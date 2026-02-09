@@ -6,6 +6,9 @@ license = "Apache-2.0"
 description = "CLI for NRF-1.1: encode/decode/hash"
 repository = "https://example.com/AI-NRF1"
 
+[workspace]
+# Empty workspace to isolate from parent
+
 [dependencies]
 nrf-core = { path = "../../impl/rust/nrf-core" }
 clap = { version = "4", features = ["derive"] }
