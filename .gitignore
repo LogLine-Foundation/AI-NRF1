@@ -3,3 +3,12 @@ target/
 *.pyc
 __pycache__/
 *.zip
+
+# Hypothesis cache (Python tests)
+.hypothesis/
+
+# Local Python venvs
+.venv/
+
+# Tool-local lockfile (workspace already has Cargo.lock)
+/tools/nrf1-cli/Cargo.lock
